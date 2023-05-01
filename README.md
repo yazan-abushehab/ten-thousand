@@ -15,3 +15,10 @@ install pytest to run the test
  ```
  pytest
  ```
+
+<br>
+
+## To run the code :
+```
+python ten_thousand/game.py
+```
