@@ -68,3 +68,31 @@ class GameLogic:
         if len(counter)== 2 and len(set(counter.values()))==1 and list(set(counter.values()))[0]==3:
             unbanked= unbanked * 2
         return unbanked
+    def validate_keepers(roll,keepers):
+        roll_to_test_cheater = list(roll)
+        for i in keepers:
+            if i not in roll_to_test_cheater:
+                  
+                return False
+            index = roll_to_test_cheater.index(i)
+            roll_to_test_cheater.pop(index)
+        return True
+            
+    def get_scorers(test_input):
+        main_score = GameLogic.calculate_score(test_input)
+        # print(main_score)
+        scorers = []
+        input_list = list(test_input)
+        # print(range(len(input_list)))
+        for i,val in enumerate(input_list):
+            input_list.pop(i)
+            element_score = GameLogic.calculate_score(tuple(input_list))
+            if element_score != main_score:
+                # print("x")
+                scorers.append(val)
+                input_list.insert(i,val)
+            else:
+                input_list.insert(i,val)   
+        scorers_tuple = tuple(scorers) 
+        # print(scorers_tuple)       
+        return scorers_tuple
