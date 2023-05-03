@@ -8,7 +8,7 @@ validate_keepers = GameLogic.validate_keepers
 hot_dice = GameLogic.get_scorers
 
 
-def play (roller = GameLogic.roll_dice):
+def play (roller = GameLogic.roll_dice,num_rounds=10):
     """this function starts the game when called"""
     global roll_dice
     roll_dice = roller
@@ -19,15 +19,17 @@ def play (roller = GameLogic.roll_dice):
         quitter()
     if user_res == 'y':
         print(f'Starting round 1')
-        start_game()
+        start_game(num_rounds)
                 
 def quitter ():
         """this function return a string  when the user type n in the beganing of runing this code"""
         return print('OK. Maybe another time') 
     
 
-def start_game(round_num=1,total=0,number_dices = 6,points = 0):
+def start_game(num_rounds,round_num=1,total=0,number_dices = 6,points = 0):
         """this function starts the rounds when the user type y to start the game"""
+        
+            
         
         user_choice = ''
         
@@ -39,14 +41,18 @@ def start_game(round_num=1,total=0,number_dices = 6,points = 0):
         print("*** "+unpacked_tuple.strip()+' ***') 
         # zilch test
         if points_calculate(first_roll) == 0:
+              
+              
               print("****************************************\n**        Zilch!!! Round over         **\n****************************************")
               points = 0
               print(f"You banked 0 points in round {round_num}")
               print(f"Total score is {total} points")
+              if round_num == num_rounds:
+                  return  end_game(total)
               round_num+=1
               print(f'Starting round {round_num}')
 
-              return start_game(round_num,total,number_dices=6)
+              return start_game(num_rounds,round_num,total,number_dices=6)
 
         print("Enter dice to keep, or (q)uit:")
         user_choice = input('> ')
@@ -82,13 +88,13 @@ def start_game(round_num=1,total=0,number_dices = 6,points = 0):
                   end_game(total)
               elif user_choice == 'r':
                   if number_dices > 0 :
-                      start_game(round_num,total,number_dices,points)
+                      start_game(num_rounds,round_num,total,number_dices,points)
                   else:
                        print('you ran out of dices new round will start\n you didnt bank yor points so you lost them')
                        round_num+=1
-                       start_game(round_num,total,number_dices=6)  
+                       start_game(num_rounds,round_num,total,number_dices=6)  
               elif user_choice == "b":
-                       bank_points(points,round_num,total)
+                       bank_points(num_rounds,points,round_num,total)
               
             # else:
                   # print("Cheater!!! Or possibly made a typo...")
@@ -160,15 +166,17 @@ def start_game(round_num=1,total=0,number_dices = 6,points = 0):
                     
                                     
 
-def bank_points(points,round_num,total):
+def bank_points(num_rounds,points,round_num,total):
       """this function bank points when the user type b to store his point"""
       total = total + points
       print(f"You banked {points} points in round {round_num}")
       print(f"Total score is {total} points")
+      if round_num == num_rounds:
+            return  end_game(total)
       round_num += 1
       print(f'Starting round {round_num}')
 
-      start_game(round_num,total)       
+      start_game(num_rounds,round_num,total)       
         
 
 def end_game(total):
